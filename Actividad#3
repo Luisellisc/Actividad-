@@ -1,0 +1,33 @@
+import java.util.Scanner;
+
+public class varprimitivas {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(" Bienvenido visistante, facilitar con tu informacion personal por favor.");
+        System.out.print(" Ingresa tu nombre: ");
+        String nombre = scanner.nextLine();
+
+        System.out.print("Ingresa tu edad: ");
+        int edad = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Ingresa tu número de cédula: ");
+        String cedula = scanner.nextLine();
+
+        System.out.print("Ingresa la cantidad de dinero en tu cuenta: ");
+        double dineroEnCuenta = scanner.nextDouble();
+        scanner.nextLine();
+
+        System.out.print("¿Eres residente? (sí/no): ");
+        boolean esResidente = scanner.nextLine().equalsIgnoreCase("sí");
+
+        System.out.println("\nVisitante aqui esta la información ingresada:");
+        System.out.println("Nombre: " + nombre);
+        System.out.println("Edad: " + edad);
+        System.out.println("Cédula: " + cedula);
+        System.out.println("Dinero en cuenta: " + dineroEnCuenta);
+        System.out.println("Residente " + (esResidente ? "Sí" : "No"));
+
+        scanner.close();
+    }
+}
