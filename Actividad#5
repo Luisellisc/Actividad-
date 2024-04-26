@@ -1,1 +1,64 @@
+import java.util.Scanner;
+
+public class calculadora {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Calculadora de área de figuras geométricas");
+        System.out.println("Elige una figura:");
+        System.out.println("1. Círculo");
+        System.out.println("2. Cuadrado");
+        System.out.println("3. Triángulo");
+        System.out.println("4. Rectángulo");
+        System.out.println("5. Pentágono");
+
+        System.out.print("Introduce el número correspondiente a la figura: ");
+        int opcion = scanner.nextInt();
+
+        double area = 0.0;
+
+        switch (opcion) {
+            case 1:
+                System.out.print("Introduce el radio del círculo: ");
+                double radio = scanner.nextDouble();
+                area = Math.PI * radio * radio;
+                break;
+            case 2:
+                System.out.print("Introduce el lado del cuadrado: ");
+                double lado = scanner.nextDouble();
+                area = lado * lado;
+                break;
+            case 3:
+                System.out.print("Introduce la base del triángulo: ");
+                double base = scanner.nextDouble();
+                System.out.print("Introduce la altura del triángulo: ");
+                double altura = scanner.nextDouble();
+                area = (base * altura) / 2;
+                break;
+            case 4:
+                System.out.print("Introduce la base del rectángulo: ");
+                double baseRectangulo = scanner.nextDouble();
+                System.out.print("Introduce la altura del rectángulo: ");
+                double alturaRectangulo = scanner.nextDouble();
+                area = baseRectangulo * alturaRectangulo;
+                break;
+            case 5:
+                System.out.print("Introduce el lado del pentágono: ");
+                double ladoPentagono = scanner.nextDouble();
+                System.out.print("Introduce la apotema del pentágono: ");
+                double apotemaPentagono = scanner.nextDouble();
+                area = (5.0 / 2) * ladoPentagono * apotemaPentagono;
+                break;
+            default:
+                System.out.println("Opción no válida. Por favor, elige una figura válida.");
+                break;
+        }
+
+        if (opcion >= 1 && opcion <= 5) {
+            System.out.println("El área de la figura seleccionada es: " + area);
+        }
+
+        scanner.close();
+    }
+}
 
