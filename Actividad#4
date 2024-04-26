@@ -1,1 +1,91 @@
+import java.util.Scanner;
+import java.time.LocalTime;
+import java.time.Duration;
+import java.time.format.DateTimeFormatter;
+
+public class visitasem {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        System.out.print("¿Quieres entrar al edificio hoy? (sí/no): ");
+        String respuesta = scanner.nextLine();
+
+        if (respuesta.equalsIgnoreCase("sí")) {
+            System.out.print("Ingresa tu nombre: ");
+            String nombre = scanner.nextLine();
+
+            System.out.print("Ingresa tu edad: ");
+            int edad = scanner.nextInt();
+            scanner.nextLine();
+
+            System.out.print("Ingresa tu número de cédula: ");
+            String cedula = scanner.nextLine();
+
+            System.out.print("Ingresa la cantidad de dinero en tu cuenta: ");
+            double dineroEnCuenta = scanner.nextDouble();
+            scanner.nextLine();
+
+            System.out.print("¿Eres residente? (sí/no): ");
+            boolean esResidente = scanner.nextLine().equalsIgnoreCase("sí");
+
+            System.out.println("\nInformación ingresada:");
+            System.out.println("Nombre: " + nombre);
+            System.out.println("Edad: " + edad);
+            System.out.println("Cédula: " + cedula);
+            System.out.println("Dinero en cuenta: " + dineroEnCuenta);
+            System.out.println("Residente " + (esResidente ? "Sí" : "No"));
+
+            if (edad > 18) {
+                System.out.println("Mayor de edad.");
+            } else {
+                System.out.println("Menor de edad.");
+            }
+
+            System.out.println("\nHaz ingresado al edificio.");
+
+            int diasVisitados = 0;
+            int totalTiempo = 0;
+            int vecesIngresadas = 0;
+            LocalTime horaEntrada = null;
+
+            while (true) {
+                System.out.print("\n¿Quieres salir del edificio? (sí/no): ");
+                respuesta = scanner.nextLine();
+
+                if (respuesta.equalsIgnoreCase("sí")) {
+                    
+                    LocalTime horaSalida = LocalTime.now();
+
+
+                    Duration tiempoEnEdificio = Duration.between(horaEntrada, horaSalida);
+                    long tiempoEnSegundos = tiempoEnEdificio.getSeconds();
+                    totalTiempo += tiempoEnSegundos;
+
+                    System.out.println("Tiempo dentro de edificio: " + tiempoEnEdificio.getSeconds() + " segundos");
+                    System.out.println("Hora de entrada: " + horaEntrada.format(formatter));
+                    System.out.println("Hora de salida: " + horaSalida.format(formatter));
+
+                    break;
+                }
+
+                diasVisitados++;
+                vecesIngresadas++;
+
+
+                horaEntrada = LocalTime.now();
+            }
+
+            double tiempoPromedio = (double) totalTiempo / diasVisitados;
+
+            System.out.println("\nEn esta semana has ingresado al edificio: " + vecesIngresadas + " veces.");
+            System.out.println("Días visitados durante la semana: " + diasVisitados);
+            System.out.println("Tiempo promedio de estadía por día: " + tiempoPromedio + " segundos");
+        } else {
+            System.out.println("No has ingresado al edificio.");
+        }
+
+        scanner.close();
+    }
+}
 
