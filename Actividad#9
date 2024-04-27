@@ -36,8 +36,7 @@ public class Validadorpas {
     }
 
     private static boolean validatePassword(String password) {
-        // Longitud mínima de 8 caracteres, presencia de caracteres especiales, al menos 2 mayúsculas,
-        // al menos 3 minúsculas, y al menos 1 número.
+        
 
         String regex = "^(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?])(?=.*[A-Z].*[A-Z])(?=.*[a-z].*[a-z].*[a-z])(?=.*\\d).{8,}$";
         Pattern pattern = Pattern.compile(regex);
