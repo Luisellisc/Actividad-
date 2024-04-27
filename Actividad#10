@@ -1,0 +1,67 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Validadorpasn {
+    private static final int NUM_THREADS = 3;
+    private static final String LOG_FILE = "password_log.txt";
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ExecutorService executorService = Executors.newFixedThreadPool(NUM_THREADS);
+        AtomicInteger validPasswordsCount = new AtomicInteger(0);
+        System.out.println("Bienvenido, aqui podras comprobar si las contasenas que quieras son validas ");
+
+        try (FileWriter writer = new FileWriter(LOG_FILE)) {
+            for (int i = 0; i < NUM_THREADS; i++) {
+                System.out.println("Ingrese la contraseña con estas condiciones:Longitud mínima de 8 caracteres, presencia de caracteres especiales, al menos 2 mayúsculas,\n" +
+                        " al menos 3 minúsculas, y al menos 1 número.#" + (i + 1) + ":");
+                String password = scanner.nextLine();
+                Future<Boolean> result = executorService.submit(new PasswordValidatorTask(password));
+                boolean isValid = result.get();
+                String resultString = isValid ? "válida" : "inválida";
+                String logEntry = "Contraseña: " + password + ", Resultado: " + resultString + "\n";
+                writer.write(logEntry);
+                if (isValid) {
+                    System.out.println("Contraseña válida.");
+                    validPasswordsCount.incrementAndGet();
+                } else {
+                    System.out.println("Contraseña inválida.");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        executorService.shutdown();
+        System.out.println("Total de contraseñas válidas: " + validPasswordsCount.get());
+        System.out.println("Registros de validación almacenados en el archivo: " + LOG_FILE);
+    }
+
+    private static class PasswordValidatorTask implements Callable<Boolean> {
+        private final String password;
+
+        public PasswordValidatorTask(String password) {
+            this.password = password;
+        }
+
+        @Override
+        public Boolean call() throws Exception {
+            // Longitud mínima de 8 caracteres, presencia de caracteres especiales, al menos 2 mayúsculas,
+            // al menos 3 minúsculas, y al menos 1 número.
+            String regex = "^(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?])(?=.*[A-Z].*[A-Z])(?=.*[a-z].*[a-z].*[a-z])(?=.*\\d).{8,}$";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(password);
+            return matcher.matches();
+        }
+    }
+}
