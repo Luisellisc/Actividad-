@@ -1,0 +1,122 @@
+import java.util.Scanner;
+
+class Tzapato {
+    private String nombre;
+    private int cantidadInicial;
+    private int cantidadVendida;
+
+    public Tzapato(String nombre, int cantidadInicial) {
+        this.nombre = nombre;
+        this.cantidadInicial = cantidadInicial;
+        this.cantidadVendida = 0;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public int getCantidadInicial() {
+        return cantidadInicial;
+    }
+
+    public int getCantidadVendida() {
+        return cantidadVendida;
+    }
+
+    public int getDisponibilidad() {
+        return cantidadInicial - cantidadVendida;
+    }
+
+    public void vender(int cantidad) {
+        cantidadVendida += cantidad;
+    }
+
+    public void duplicarInventario() {
+        cantidadInicial *= 2;
+    }
+}
+
+class Inventario {
+    private Tzapato[] zapatos;
+
+    public Inventario() {
+        this.zapatos = new Tzapato[3]; // Tres tipos de zapatos
+        inicializarZapatos();
+    }
+
+    private void inicializarZapatos() {
+        zapatos[0] = new Tzapato("Zapato deportivo", 50);
+        zapatos[1] = new Tzapato("Zapato casual", 30);
+        zapatos[2] = new Tzapato("Zapato formal", 20);
+        
+    }
+
+    public boolean haySuficienteStock(int tipoZapato, int cantidad) {
+        if (tipoZapato >= 1 && tipoZapato <= 3) {
+            return zapatos[tipoZapato - 1].getDisponibilidad() >= cantidad;
+        } else {
+            return false;
+        }
+    }
+
+    public void venderZapato(int tipoZapato, int cantidad) {
+        if (tipoZapato >= 1 && tipoZapato <= 3) {
+            zapatos[tipoZapato - 1].vender(cantidad);
+        }
+    }
+
+    public void duplicarInventario(int tipoZapato) {
+        if (tipoZapato >= 1 && tipoZapato <= 3) {
+            zapatos[tipoZapato - 1].duplicarInventario();
+        }
+    }
+
+    public void mostrarInventario() {
+        System.out.println("Inventario actualizado:");
+        for (Tzapato zapato : zapatos) {
+            System.out.println("Nombre: " + zapato.getNombre() + ", Disponibilidad: " + zapato.getDisponibilidad());
+        }
+    }
+}
+
+public class TiendaZapato {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Inventario inventario = new Inventario();
+
+        boolean deseaSeguir = true;
+
+        while (deseaSeguir) {
+            // Menú para seleccionar el tipo de zapato que desea sacar
+            System.out.println("Bienvenido a la tienda de zapatos");
+            System.out.println("Seleccione el tipo de zapato que desea sacar:");
+            System.out.println("1. Zapato deportivo");
+            System.out.println("2. Zapato casual");
+            System.out.println("3. Zapato formal");
+            System.out.print("Ingrese el número correspondiente al tipo de zapato: ");
+            int tipoZapato = scanner.nextInt();
+
+            // Simular venta de zapatos
+            System.out.println("Simulación de venta:");
+            System.out.print("Cantidad a vender: ");
+            int cantidadVenta = scanner.nextInt();
+
+            if (inventario.haySuficienteStock(tipoZapato, cantidadVenta)) {
+                inventario.venderZapato(tipoZapato, cantidadVenta);
+                System.out.println("Venta realizada con éxito.");
+            } else {
+                System.out.println("No hay suficiente stock para realizar la venta.Ingrese una cantidad menor.");
+            }
+
+            // Preguntar si desea seguir sacando zapatos
+            System.out.print("Desea seguir sacando zapatos? (si/no): ");
+            String respuesta = scanner.next();
+            deseaSeguir = respuesta.equalsIgnoreCase("si");
+        }
+
+        // Mostrar inventario actualizado
+        inventario.mostrarInventario();
+
+        scanner.close();
+    }
+}
